@@ -18,29 +18,16 @@
             const resultDiv = document.getElementById('result');
 
             // Clear previous result
-            resultDiv.textContent = '';
+            resultDiv.textContent = 'Processing...';
 
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', apiUrl, true);
-
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        // Parse the HTML response
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(xhr.responseText, 'text/html');
-                        resultDiv.textContent = doc.body.innerText || "Parsed successfully.";
-                    } else {
-                        resultDiv.textContent = 'Error: ' + xhr.status + ' ' + xhr.statusText;
-                    }
-                }
-            };
-
-            xhr.onerror = function() {
-                resultDiv.textContent = 'Request Error';
-            };
-
-            xhr.send();
+            fetch(apiUrl)
+                .then(response => response.text())
+                .then(data => {
+                    resultDiv.textContent = data || "No text extracted";
+                })
+                .catch(error => {
+                    resultDiv.textContent = 'Error: ' + error;
+                });
         });
     </script>
 </body>
