@@ -14,7 +14,7 @@
     <script>
         document.getElementById('sendButton').addEventListener('click', function() {
             const imageUrl = document.getElementById('imageUrl').value;
-            const apiUrl = `https://corsproxy.io/?https://lens.google.com/uploadbyurl?url=${encodeURIComponent(imageUrl)}`;
+            const apiUrl = `https://imager-psi.vercel.app/api/get-text-from-image?url=${encodeURIComponent(imageUrl)}`;
             const resultDiv = document.getElementById('result');
 
             // Clear previous result
@@ -22,11 +22,6 @@
 
             const xhr = new XMLHttpRequest();
             xhr.open('GET', apiUrl, true);
-
-            // Set headers
-            xhr.setRequestHeader('User-Agent', 'Mozilla/5.0');
-            xhr.setRequestHeader('Accept', 'text/html');
-            xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
 
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
