@@ -14,7 +14,7 @@
     <script>
         document.getElementById('sendButton').addEventListener('click', function() {
             const imageUrl = document.getElementById('imageUrl').value;
-            const apiUrl = `https://lens.google.com/uploadbyurl?url=${encodeURIComponent(imageUrl)}`;
+            const apiUrl = `https://corsproxy.io/?https://lens.google.com/uploadbyurl?url=${encodeURIComponent(imageUrl)}`;
             const resultDiv = document.getElementById('result');
 
             // Clear previous result
