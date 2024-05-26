@@ -14,21 +14,38 @@
     <script>
         document.getElementById('sendButton').addEventListener('click', function() {
             const imageUrl = document.getElementById('imageUrl').value;
+            const apiUrl = `https://lens.google.com/uploadbyurl?url=${encodeURIComponent(imageUrl)}`;
+            const resultDiv = document.getElementById('result');
 
-            fetch('https://imager-psi.vercel.app/api/get-text-from-image', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ imageUrl })
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('result').textContent = data;
-            })
-            .catch(error => {
-                document.getElementById('result').textContent = 'Error: ' + error;
-            });
+            // Clear previous result
+            resultDiv.textContent = '';
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', apiUrl, true);
+
+            // Set headers
+            xhr.setRequestHeader('User-Agent', 'Mozilla/5.0');
+            xhr.setRequestHeader('Accept', 'text/html');
+            xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Parse the HTML response
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(xhr.responseText, 'text/html');
+                        resultDiv.textContent = doc.body.innerText || "Parsed successfully.";
+                    } else {
+                        resultDiv.textContent = 'Error: ' + xhr.status + ' ' + xhr.statusText;
+                    }
+                }
+            };
+
+            xhr.onerror = function() {
+                resultDiv.textContent = 'Request Error';
+            };
+
+            xhr.send();
         });
     </script>
 </body>
