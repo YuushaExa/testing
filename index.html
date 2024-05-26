@@ -15,7 +15,7 @@
         document.getElementById('sendButton').addEventListener('click', function() {
             const imageUrl = document.getElementById('imageUrl').value;
             
-            fetch('http://localhost:3000/api/get-text-from-image', {
+            fetch('https://imager-psi.vercel.app/get-text-from-image', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
