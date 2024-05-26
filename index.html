@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Text Extractor</title>
+</head>
+<body>
+    <h1>Extract Text from Image</h1>
+    <input type="text" id="imageUrl" placeholder="Enter image URL">
+    <button id="sendButton">Send</button>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('sendButton').addEventListener('click', function() {
+            const imageUrl = document.getElementById('imageUrl').value;
+            const apiUrl = `https://lens.google.com/uploadbyurl?url=${encodeURIComponent(imageUrl)}`;
+
+            fetch(apiUrl)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('result').textContent = data;
+                })
+                .catch(error => {
+                    document.getElementById('result').textContent = 'Error: ' + error;
+                });
+        });
+    </script>
+</body>
+</html>
