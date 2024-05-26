@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Text Extractor</title>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2/dist/tesseract.min.js"></script>
 </head>
 <body>
     <h1>Extract Text from Image</h1>
@@ -14,20 +15,19 @@
     <script>
         document.getElementById('sendButton').addEventListener('click', function() {
             const imageUrl = document.getElementById('imageUrl').value;
-            
-            fetch('https://imager-psi.vercel.app/api/get-text-from-image', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ imageUrl })
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('result').textContent = data;
-            })
-            .catch(error => {
-                document.getElementById('result').textContent = 'Error: ' + error;
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = 'Processing...';
+
+            Tesseract.recognize(
+                imageUrl,
+                'eng',
+                {
+                    logger: m => console.log(m) // Optional: log progress updates
+                }
+            ).then(({ data: { text } }) => {
+                resultDiv.textContent = text;
+            }).catch(error => {
+                resultDiv.textContent = 'Error: ' + error;
             });
         });
     </script>
